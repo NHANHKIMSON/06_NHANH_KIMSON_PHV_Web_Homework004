@@ -11,6 +11,19 @@ import CardComponent from "./components/CardComponent";
 
 function App() {
   const[cards, setCards] = useState([]);
+  const [searchValue, setSearchValue] = useState();
+
+  const handleSearchQuery = (query) =>{
+    setSearchValue(query.toLowerCase());
+  }
+
+  const filterCards = searchValue ? cards.filter((card) => 
+    card.projectName.toLowerCase().includes(searchValue)
+    )
+    : cards;
+  console.log("Card After Filte: " ,filterCards);
+
+
   const handleSubmitProject = (projects) => {
     // setCards([...cards, projects]);
     setCards((prevCards) =>[...prevCards, projects]);
@@ -24,7 +37,7 @@ function App() {
         </div>
         <div className="col-span-10 bg-slate-100 w-full h-full">
           <div className="p-4">
-            <TopNavbarComponent />
+            <TopNavbarComponent  onSearch={handleSearchQuery}/>
           </div>
           <div className="grid grid-cols-12">
             <div className="col-span-9 p-4">
@@ -37,7 +50,7 @@ function App() {
                   <AddNewProjectComponent handlerSubmitProject={handleSubmitProject}/>
                 </div>
                 <div className="grid grid-cols-1 gap-4 mt-6 sm:grid-cols-3">
-                  {cards.map((card, index)=>(
+                  {filterCards.map((card, index)=>(
                     <CardComponent key={index} project={card}/>
                   ))}
                   </div>
