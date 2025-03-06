@@ -35,7 +35,7 @@ function App() {
         <div className="col-span-2 w-full h-full hidden sm:block">
           <SidebarComponent/>
         </div>
-        <div className="col-span-10 w-full h-full overflow-y-scroll">
+        <div className="col-span-10 w-full h-full bg-slate-100 overflow-y-scroll">
           <div className="p-4">
             <TopNavbarComponent  onSearch={handleSearchQuery}/>
           </div>
