@@ -26,6 +26,19 @@ export default function LearningMaterialsComponent() {
     }
     setDashboard(sortedData);
   }, [filter]);
+
+
+
+  const formatDate = (dateString) =>{
+    if(!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      weekday: "long",
+      month: "short",
+      day: "2-digit",
+      year: "numeric"
+    });
+  };
   return (
     <div className="bg-white drop-shadow-lg rounded-2xl overflow-auto h-[80vh]">
       {/* calling filter component */}
@@ -55,7 +68,7 @@ export default function LearningMaterialsComponent() {
               color={items.isFavorite ? "#FAA300" : "#2B343B"} 
               size={20} />
             </div>
-            <p className="text-gray-400 text-sm">Posted at: {items.postedAt}</p>
+            <p className="text-gray-400 text-sm">Posted at: {formatDate(items.postedAt)}</p>
           </div>
         </div>
         ))}
