@@ -7,12 +7,39 @@ export default function CardComponent({ project }) {
     if (project.progress <= 75) return "bg-custom-carrot";
     return "bg-custom-sky-blue"; // 100%
   };
+  const getColor = () => {
+    if (project.progress <= 25) return "text-custom-pink";
+    if (project.progress <= 50) return "text-custom-yellow-500";
+    if (project.progress <= 75) return "text-custom-carrot";
+    return "text-custom-sky-blue";
+  };
+  const formatDate = (dateString) =>{
+    if(!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric"
+    });
+  };
+  const getDayLeft = (dueDate) =>{
+    if(!dueDate) return "N/A";
+
+    const due = new Date(dueDate);
+    const today = new Date();
+
+    const diffTime = due - today;
+    const diffDay = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    return diffDay > 0 ? `${diffDay} days left ` : "Due date passed";
+
+  }
   return (
     <div>
       <div className="max-w-sm p-6 bg-white rounded-2xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
         <div className="flex justify-between mb-5">
           {/* date */}
-          <p className={`text-custom-sky-blue font-medium`}>{project.dueDate}</p>
+          <p className={`font-medium ${getColor()}`}>{formatDate(project.dueDate)}</p>
           <EllipsisVertical size={20} color="#374957" />
         </div>
 
@@ -32,27 +59,12 @@ export default function CardComponent({ project }) {
         </div>
         <div className="relative mb-5 w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
           <div className={`h-2.5 rounded-full ${getBgColor()}`} style={{ width: `${project.progress}%`}} ></div>
-
-          {/* <div
-            className="border-l-4 rounded-full border-l-custom-pink h-5 absolute -top-1 left-1/4"
-            title="25%"
-          ></div>
-
-          <div
-            className="border-l-4 rounded-full border-l-custom-yellow-500 h-5 absolute -top-1 left-2/4"
-            title="50%"
-          ></div>
-
-          <div
-            className="border-l-4 rounded-full border-l-custom-carrot h-5 absolute -top-1 left-3/4"
-            title="75%"
-          ></div> */}
         </div>
 
         {/* deadline */}
         <div className="flex justify-end">
           <p className="font-medium bg-light-gray py-1.5 px-4 rounded-lg max-w-28 text-center">
-            1 day left
+             {getDayLeft(project.dueDate)}
           </p>
         </div>
       </div>

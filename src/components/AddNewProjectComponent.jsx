@@ -1,18 +1,44 @@
 import { Plus } from "lucide-react";
 import { useState } from "react";
 export default function AddNewProjectComponent({ handlerSubmitProject }){
-  const [projects, setProjects] = useState({});
-
+  const [projects, setProjects] = useState({
+    projectName: '',
+    dueDate: '',
+    progress: '',
+    description: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Et cupiditate illo quam tenetur! Sapiente dicta, laudantium itaque accusantium perferendis a ad in! Est incidunt, quis dolore neque iste velit consequuntur?',
+  });
+  const [dateError, setErrorDate] = useState({});
+  const validateForm = () =>{
+    const newError = {};
+    if(!projects.projectName.trim()){
+      newError.projectName = "Project name is required.";
+    }
+    if(!projects.dueDate){
+      newError.dueDate = "Please choose the deadline of your project.";
+    }else if(projects.dueDate < new Date().toISOString().split("T")[0]){
+      newError.dueDate = "Selected date can't be lower than current date.";
+    } 
+    if(!projects.progress){
+      newError.progress = "Please select your project progress.";
+    }
+    setErrorDate(newError);
+    return Object.keys(newError).length === 0;
+  }
   const handleSubmit = (e) =>{
     e.preventDefault();
-    handlerSubmitProject(projects);
+    if(validateForm()){
+      handlerSubmitProject(projects);
+    }
+    console.log(dateError);
   }
+  console.log(dateError);
   const handleValue = (e) =>{
     console.log("Input: " , e.target.value);
     const newProject = ({...projects, [e.target.name]: e.target.value }); // ចាប់យកតម្លៃចេញ ពី input លក្ខណជា obj តាមរយោះការ Distrucuring using ... State_name
     setProjects(newProject);
   }
   // console.log("All Project: " , projects);
+
   return (
     <>
     <div>
@@ -76,10 +102,19 @@ export default function AddNewProjectComponent({ handlerSubmitProject }){
                     type="text"
                     name="projectName"
                     id="projectName"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className={`bg-gray-50 border
+                      ${dateError.projectName ? "border-red-500" : "border-gray-300"} text-gray-900
+                      text-sm rounded-lg focus:ring-primary-600
+                      focus:border-primary-600 block w-full
+                      p-2.5 dark:bg-gray-600 dark:border-gray-500
+                    dark:placeholder-gray-400 dark:text-white
+                      dark:focus:ring-primary-500 dark:focus:border-primary-500`}
                     placeholder="Type Project Name"
                   />
                 </div>
+                {dateError.projectName && (
+                  <small className="text-red-500">{dateError.projectName}</small>
+                )}
 
                 <div className="col-span-2">
                   <label
@@ -93,9 +128,14 @@ export default function AddNewProjectComponent({ handlerSubmitProject }){
                     type="date"
                     name="dueDate"
                     id="dueDate"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className={`bg-gray-50 border
+                      ${dateError.dueDate ? "border-red-500" : "border-gray-300"}
+                      text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}
                   />
                 </div>
+                {dateError.dueDate && (
+                  <small className="text-red-500">{dateError.dueDate}</small>
+                )}
 
                 <div className="col-span-2">
                   <label
@@ -108,14 +148,19 @@ export default function AddNewProjectComponent({ handlerSubmitProject }){
                     onChange={handleValue}
                     id="progress"
                     name="progress"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className={`bg-gray-50 border 
+                    ${dateError.progress ? "border-red-500" : "border-gray-300"} border-gray-300
+                    text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}
                   >
-                    <option defaultValue="">Select Progress</option>
+                    <option value="">Select Progress</option>
                     <option value="100">100</option>
                     <option value="75">75</option>
                     <option value="50">50</option>
                     <option value="25">25</option>
                   </select>
+                  {dateError.progress && (
+                    <small className="text-red-500">{dateError.progress}</small>
+                  )}
                 </div>
                 <div className="col-span-2">
                   <label
