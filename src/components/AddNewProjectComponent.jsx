@@ -28,6 +28,7 @@ export default function AddNewProjectComponent({ handlerSubmitProject }){
     e.preventDefault();
     if(validateForm()){
       handlerSubmitProject(projects);
+      
     }
     console.log(dateError);
   }
@@ -37,6 +38,7 @@ export default function AddNewProjectComponent({ handlerSubmitProject }){
     const newProject = ({...projects, [e.target.name]: e.target.value }); // ចាប់យកតម្លៃចេញ ពី input លក្ខណជា obj តាមរយោះការ Distrucuring using ... State_name
     setProjects(newProject);
   }
+
   // console.log("All Project: " , projects);
 
   return (
@@ -52,6 +54,8 @@ export default function AddNewProjectComponent({ handlerSubmitProject }){
       >
         <Plus size={22} /> <span className="text-base">New Project</span>
       </button>
+      
+
       <div
         id="crud-modal"
         tabIndex="-1"
@@ -95,7 +99,7 @@ export default function AddNewProjectComponent({ handlerSubmitProject }){
                     htmlFor="projectName"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Project Name
+                    Project Name <small className="text-red-500">*</small>
                   </label>
                   <input
                     onChange={handleValue}
@@ -121,7 +125,7 @@ export default function AddNewProjectComponent({ handlerSubmitProject }){
                     htmlFor="dueDate"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Due Date
+                    Due Date <small className="text-red-500">*</small>
                   </label>
                   <input
                     onChange={handleValue}
@@ -142,7 +146,7 @@ export default function AddNewProjectComponent({ handlerSubmitProject }){
                     htmlFor="progress"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Progress
+                    Progress <small className="text-red-500">*</small>
                   </label>
                   <select
                     onChange={handleValue}
@@ -181,6 +185,7 @@ export default function AddNewProjectComponent({ handlerSubmitProject }){
               </div>
               <div className="text-right">
                 <button
+                id="close"
                   type="submit"
                   className="text-white inline-flex items-center bg-custom-sky-blue hover:bg-custom-sky-blue-500 focus:ring-4 focus:outline-none focus:ring-custom-sky-blue-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-custom-sky-blue-500 dark:hover:bg-custom-sky-blue-500 dark:focus:ring-custom-sky-blue-500"
                 >
